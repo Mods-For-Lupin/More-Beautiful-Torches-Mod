@@ -1,5 +1,6 @@
 package io.github.jason13official.more_beautiful_torches;
 
+import io.github.jason13official.more_beautiful_torches.datagen.client.MBTDatagenClient;
 import io.github.jason13official.more_beautiful_torches.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_beautiful_torches.impl.common.registry.ModEntities;
 import io.github.jason13official.more_beautiful_torches.impl.common.registry.ModItems;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.RegisterEvent;
 
 @Mod(Constants.MOD_ID)
@@ -43,6 +45,7 @@ public class MoreBeautifulTorchesForge {
     bind(Registries.CREATIVE_MODE_TAB, ModTabs::register);
 
     EVENT_BUS.addListener((Consumer<FMLCommonSetupEvent>) event -> MoreBeautifulTorches.init());
+    EVENT_BUS.addListener((Consumer<GatherDataEvent>) MBTDatagenClient::init);
 
     MinecraftForge.EVENT_BUS.addListener((Consumer<AddReloadListenerEvent>) event -> {
       event.addListener(new ResourceReloadListener());

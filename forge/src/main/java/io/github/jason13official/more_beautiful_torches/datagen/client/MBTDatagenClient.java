@@ -23,6 +23,7 @@ public class MBTDatagenClient {
     generator.addProvider(event.includeClient(), new MBTTorchTextureProvider(output, existingFileHelper));
     generator.addProvider(event.includeClient(), new MBTBlockStateProvider(output, Constants.MOD_ID, existingFileHelper));
     generator.addProvider(event.includeClient(), new MBTItemModelProvider(output, Constants.MOD_ID, existingFileHelper));
+    generator.addProvider(event.includeClient(), new MBTLanguageProvider(output));
 
     MBTDatagenServer.init(event);
   }

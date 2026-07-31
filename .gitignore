@@ -23,4 +23,4 @@ _reference
 eclipse
 run
 runs
-forge/src/generated
+*/src/generated

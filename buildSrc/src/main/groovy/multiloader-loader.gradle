@@ -27,8 +27,11 @@ tasks.named('compileJava', JavaCompile) {
 }
 
 processResources {
-    dependsOn(configurations.commonResources)
-    from(configurations.commonResources)
+  dependsOn(configurations.commonResources)
+  from(configurations.commonResources) {
+    // data generation creates a cache directory that we don't need/want in our final jars
+    exclude '.cache/**'
+  }
 }
 
 tasks.named('javadoc', Javadoc).configure {
@@ -40,5 +43,7 @@ tasks.named('sourcesJar', Jar) {
     dependsOn(configurations.commonJava)
     from(configurations.commonJava)
     dependsOn(configurations.commonResources)
-    from(configurations.commonResources)
+    from(configurations.commonResources) {
+        exclude '.cache/**'
+    }
 }

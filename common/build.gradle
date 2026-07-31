@@ -25,6 +25,8 @@ legacyForge {
     }
 }
 
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
 configurations {
     commonJava {
         canBeResolved = false
@@ -37,6 +39,10 @@ configurations {
 }
 
 artifacts {
-    commonJava sourceSets.main.java.sourceDirectories.singleFile
-    commonResources sourceSets.main.resources.sourceDirectories.singleFile
+  commonJava sourceSets.main.java.sourceDirectories.singleFile
+
+  // resources has two srcDirs (src/main/resources and datagen output at src/generated/resources)
+  // publish each dir as its own artifact; consumer do from(configurations.commonResources),
+  // which unions automatically
+  sourceSets.main.resources.srcDirs.each { dir -> commonResources dir }
 }

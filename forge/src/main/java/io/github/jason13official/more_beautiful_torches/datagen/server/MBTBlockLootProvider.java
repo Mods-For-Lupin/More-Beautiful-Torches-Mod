@@ -21,6 +21,12 @@ public class MBTBlockLootProvider extends BlockLootSubProvider {
     for (ModBlocks.TorchEntry entry : ModBlocks.TORCHES) {
       this.dropSelf(entry.standing());
     }
+    for (ModBlocks.TorchEntry entry : ModBlocks.SOUL_TORCHES) {
+      this.dropSelf(entry.standing());
+    }
+    for (ModBlocks.TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {
+      this.dropSelf(entry.standing());
+    }
   }
 
   @Override

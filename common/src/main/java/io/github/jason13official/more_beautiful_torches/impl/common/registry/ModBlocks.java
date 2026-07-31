@@ -1,6 +1,8 @@
 package io.github.jason13official.more_beautiful_torches.impl.common.registry;
 
 import io.github.jason13official.more_beautiful_torches.Constants;
+import io.github.jason13official.more_beautiful_torches.impl.common.block.RedstoneTorchBlockBase;
+import io.github.jason13official.more_beautiful_torches.impl.common.block.RedstoneWallTorchBlockBase;
 import io.github.jason13official.more_beautiful_torches.impl.common.block.TorchBlockBase;
 import io.github.jason13official.more_beautiful_torches.impl.common.block.WallTorchBlockBase;
 import java.util.List;
@@ -10,87 +12,121 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RedstoneTorchBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class ModBlocks {
 
-  public record TorchEntry(String name, Block standing, Block wall, Block source) {}
+  public enum TorchKind {NORMAL, REDSTONE, SOUL}
+
+  public record TorchEntry(String name, TorchKind kind, Block standing, Block wall, Block source) {}
 
   // Every vanilla block whose own texture is a single flat square i.e. Blocks/<name>.png
-  // exists as-is;
-  // excludes multi-face blocks (logs' end caps, pumpkin, basalt, etc.) for now
-  public static final List<TorchEntry> TORCHES = List.of(
-      torch(Blocks.ACACIA_LOG), torch(Blocks.ACACIA_PLANKS), torch(Blocks.AMETHYST_BLOCK), torch(Blocks.AMETHYST_CLUSTER),
-      torch(Blocks.ANDESITE), torch(Blocks.BAMBOO_BLOCK), torch(Blocks.BAMBOO_PLANKS), torch(Blocks.BIRCH_LOG),
-      torch(Blocks.BIRCH_PLANKS), torch(Blocks.BLACK_TERRACOTTA), torch(Blocks.BLACK_WOOL), torch(Blocks.BLACKSTONE),
-      torch(Blocks.BLUE_ICE), torch(Blocks.BLUE_TERRACOTTA), torch(Blocks.BLUE_WOOL), torch(Blocks.BOOKSHELF),
-      torch(Blocks.BRAIN_CORAL_BLOCK), torch(Blocks.BRICKS), torch(Blocks.BROWN_MUSHROOM), torch(Blocks.BROWN_MUSHROOM_BLOCK),
-      torch(Blocks.BROWN_TERRACOTTA), torch(Blocks.BROWN_WOOL), torch(Blocks.BUBBLE_CORAL_BLOCK), torch(Blocks.BUDDING_AMETHYST),
-      torch(Blocks.CALCITE), torch(Blocks.CHISELED_DEEPSLATE), torch(Blocks.CHISELED_NETHER_BRICKS), torch(Blocks.CHISELED_POLISHED_BLACKSTONE),
-      torch(Blocks.CHISELED_QUARTZ_BLOCK), torch(Blocks.CHISELED_RED_SANDSTONE), torch(Blocks.CHISELED_SANDSTONE), torch(Blocks.CHISELED_STONE_BRICKS),
-      torch(Blocks.CHORUS_FLOWER), torch(Blocks.CHORUS_PLANT), torch(Blocks.CLAY), torch(Blocks.COAL_BLOCK),
-      torch(Blocks.COAL_ORE), torch(Blocks.COARSE_DIRT), torch(Blocks.COBBLED_DEEPSLATE), torch(Blocks.COBBLESTONE),
-      torch(Blocks.COPPER_BLOCK), torch(Blocks.COPPER_ORE), torch(Blocks.CRACKED_DEEPSLATE_BRICKS), torch(Blocks.CRACKED_DEEPSLATE_TILES),
-      torch(Blocks.CRACKED_NETHER_BRICKS), torch(Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS), torch(Blocks.CRACKED_STONE_BRICKS), torch(Blocks.CRIMSON_FUNGUS),
-      torch(Blocks.CRIMSON_NYLIUM), torch(Blocks.CRIMSON_PLANKS), torch(Blocks.CRIMSON_ROOTS), torch(Blocks.CRYING_OBSIDIAN),
-      torch(Blocks.CUT_COPPER), torch(Blocks.CUT_RED_SANDSTONE), torch(Blocks.CUT_SANDSTONE), torch(Blocks.CYAN_TERRACOTTA),
-      torch(Blocks.CYAN_WOOL), torch(Blocks.DARK_OAK_LOG), torch(Blocks.DARK_OAK_PLANKS), torch(Blocks.DARK_PRISMARINE),
-      torch(Blocks.DEAD_BRAIN_CORAL_BLOCK), torch(Blocks.DEAD_BUBBLE_CORAL_BLOCK), torch(Blocks.DEAD_FIRE_CORAL_BLOCK), torch(Blocks.DEAD_HORN_CORAL_BLOCK),
-      torch(Blocks.DEAD_TUBE_CORAL_BLOCK), torch(Blocks.DEEPSLATE), torch(Blocks.DEEPSLATE_BRICKS), torch(Blocks.DEEPSLATE_COAL_ORE),
-      torch(Blocks.DEEPSLATE_COPPER_ORE), torch(Blocks.DEEPSLATE_DIAMOND_ORE), torch(Blocks.DEEPSLATE_EMERALD_ORE), torch(Blocks.DEEPSLATE_GOLD_ORE),
-      torch(Blocks.DEEPSLATE_IRON_ORE), torch(Blocks.DEEPSLATE_LAPIS_ORE), torch(Blocks.DEEPSLATE_TILES), torch(Blocks.DIAMOND_BLOCK),
-      torch(Blocks.DIAMOND_ORE), torch(Blocks.DIORITE), torch(Blocks.DIRT), torch(Blocks.DRIPSTONE_BLOCK),
-      torch(Blocks.EMERALD_BLOCK), torch(Blocks.EMERALD_ORE), torch(Blocks.END_STONE), torch(Blocks.END_STONE_BRICKS),
-      torch(Blocks.EXPOSED_COPPER), torch(Blocks.EXPOSED_CUT_COPPER), torch(Blocks.FIRE_CORAL_BLOCK), torch(Blocks.GILDED_BLACKSTONE),
-      torch(Blocks.GLOWSTONE), torch(Blocks.GOLD_BLOCK), torch(Blocks.GOLD_ORE), torch(Blocks.GRANITE),
-      torch(Blocks.GRAVEL), torch(Blocks.GRAY_TERRACOTTA), torch(Blocks.GRAY_WOOL), torch(Blocks.GREEN_TERRACOTTA),
-      torch(Blocks.GREEN_WOOL), torch(Blocks.HONEYCOMB_BLOCK), torch(Blocks.HORN_CORAL_BLOCK), torch(Blocks.ICE),
-      torch(Blocks.IRON_BARS), torch(Blocks.IRON_BLOCK), torch(Blocks.IRON_ORE), torch(Blocks.JUNGLE_LOG),
-      torch(Blocks.JUNGLE_PLANKS), torch(Blocks.LAPIS_BLOCK), torch(Blocks.LAPIS_ORE), torch(Blocks.LIGHT_BLUE_TERRACOTTA),
-      torch(Blocks.LIGHT_BLUE_WOOL), torch(Blocks.LIGHT_GRAY_TERRACOTTA), torch(Blocks.LIGHT_GRAY_WOOL), torch(Blocks.LIME_TERRACOTTA),
-      torch(Blocks.LIME_WOOL), torch(Blocks.MAGENTA_TERRACOTTA), torch(Blocks.MAGENTA_WOOL), torch(Blocks.MANGROVE_LOG),
-      torch(Blocks.MANGROVE_PLANKS), torch(Blocks.MOSS_BLOCK), torch(Blocks.MOSSY_COBBLESTONE), torch(Blocks.MOSSY_STONE_BRICKS),
-      torch(Blocks.MUD), torch(Blocks.MUD_BRICKS), torch(Blocks.MUSHROOM_STEM), torch(Blocks.NETHER_BRICKS),
-      torch(Blocks.NETHER_GOLD_ORE), torch(Blocks.NETHER_QUARTZ_ORE), torch(Blocks.NETHER_WART_BLOCK), torch(Blocks.NETHERITE_BLOCK),
-      torch(Blocks.NETHERRACK), torch(Blocks.OAK_LOG), torch(Blocks.OAK_PLANKS), torch(Blocks.OBSIDIAN),
-      torch(Blocks.ORANGE_TERRACOTTA), torch(Blocks.ORANGE_WOOL), torch(Blocks.OXIDIZED_COPPER), torch(Blocks.OXIDIZED_CUT_COPPER),
-      torch(Blocks.PACKED_ICE), torch(Blocks.PACKED_MUD), torch(Blocks.PINK_TERRACOTTA), torch(Blocks.PINK_WOOL),
-      torch(Blocks.POLISHED_ANDESITE), torch(Blocks.POLISHED_BLACKSTONE), torch(Blocks.POLISHED_BLACKSTONE_BRICKS), torch(Blocks.POLISHED_DEEPSLATE),
-      torch(Blocks.POLISHED_DIORITE), torch(Blocks.POLISHED_GRANITE), torch(Blocks.PRISMARINE_BRICKS), torch(Blocks.PURPLE_TERRACOTTA),
-      torch(Blocks.PURPLE_WOOL), torch(Blocks.PURPUR_BLOCK), torch(Blocks.PURPUR_PILLAR), torch(Blocks.QUARTZ_BRICKS),
-      torch(Blocks.QUARTZ_PILLAR), torch(Blocks.RAW_COPPER_BLOCK), torch(Blocks.RAW_GOLD_BLOCK), torch(Blocks.RAW_IRON_BLOCK),
-      torch(Blocks.RED_MUSHROOM), torch(Blocks.RED_MUSHROOM_BLOCK), torch(Blocks.RED_NETHER_BRICKS), torch(Blocks.RED_SAND),
-      torch(Blocks.RED_SANDSTONE), torch(Blocks.RED_TERRACOTTA), torch(Blocks.RED_WOOL), torch(Blocks.REDSTONE_BLOCK),
-      torch(Blocks.REDSTONE_ORE), torch(Blocks.ROOTED_DIRT), torch(Blocks.SAND), torch(Blocks.SANDSTONE),
-      torch(Blocks.SCULK), torch(Blocks.SHROOMLIGHT), torch(Blocks.SLIME_BLOCK), torch(Blocks.SMOOTH_BASALT),
-      torch(Blocks.SMOOTH_STONE), torch(Blocks.SOUL_SAND), torch(Blocks.SOUL_SOIL), torch(Blocks.SPONGE),
-      torch(Blocks.SPRUCE_LOG), torch(Blocks.SPRUCE_PLANKS), torch(Blocks.STONE), torch(Blocks.STONE_BRICKS),
-      torch(Blocks.STRIPPED_ACACIA_LOG), torch(Blocks.STRIPPED_BAMBOO_BLOCK), torch(Blocks.STRIPPED_BIRCH_LOG), torch(Blocks.STRIPPED_DARK_OAK_LOG),
-      torch(Blocks.STRIPPED_JUNGLE_LOG), torch(Blocks.STRIPPED_MANGROVE_LOG), torch(Blocks.STRIPPED_OAK_LOG), torch(Blocks.STRIPPED_SPRUCE_LOG),
-      torch(Blocks.TERRACOTTA), torch(Blocks.TUBE_CORAL_BLOCK), torch(Blocks.TUFF), torch(Blocks.WARPED_FUNGUS),
-      torch(Blocks.WARPED_NYLIUM), torch(Blocks.WARPED_PLANKS), torch(Blocks.WARPED_ROOTS), torch(Blocks.WARPED_WART_BLOCK),
-      torch(Blocks.WEATHERED_COPPER), torch(Blocks.WEATHERED_CUT_COPPER), torch(Blocks.WET_SPONGE), torch(Blocks.WHITE_TERRACOTTA),
-      torch(Blocks.WHITE_WOOL), torch(Blocks.YELLOW_TERRACOTTA), torch(Blocks.YELLOW_WOOL)
+  // exists as-is; excludes multi-face blocks (logs' end caps, pumpkin, basalt, etc.) for now
+  private static final List<Block> MATERIALS = List.of(
+      Blocks.ACACIA_LOG, Blocks.ACACIA_PLANKS, Blocks.AMETHYST_BLOCK, Blocks.AMETHYST_CLUSTER,
+      Blocks.ANDESITE, Blocks.BAMBOO_BLOCK, Blocks.BAMBOO_PLANKS, Blocks.BIRCH_LOG,
+      Blocks.BIRCH_PLANKS, Blocks.BLACK_TERRACOTTA, Blocks.BLACK_WOOL, Blocks.BLACKSTONE,
+      Blocks.BLUE_ICE, Blocks.BLUE_TERRACOTTA, Blocks.BLUE_WOOL, Blocks.BOOKSHELF,
+      Blocks.BRAIN_CORAL_BLOCK, Blocks.BRICKS, Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK,
+      Blocks.BROWN_TERRACOTTA, Blocks.BROWN_WOOL, Blocks.BUBBLE_CORAL_BLOCK, Blocks.BUDDING_AMETHYST,
+      Blocks.CALCITE, Blocks.CHISELED_DEEPSLATE, Blocks.CHISELED_NETHER_BRICKS, Blocks.CHISELED_POLISHED_BLACKSTONE,
+      Blocks.CHISELED_QUARTZ_BLOCK, Blocks.CHISELED_RED_SANDSTONE, Blocks.CHISELED_SANDSTONE, Blocks.CHISELED_STONE_BRICKS,
+      Blocks.CHORUS_FLOWER, Blocks.CHORUS_PLANT, Blocks.CLAY, Blocks.COAL_BLOCK,
+      Blocks.COAL_ORE, Blocks.COARSE_DIRT, Blocks.COBBLED_DEEPSLATE, Blocks.COBBLESTONE,
+      Blocks.COPPER_BLOCK, Blocks.COPPER_ORE, Blocks.CRACKED_DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_TILES,
+      Blocks.CRACKED_NETHER_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_STONE_BRICKS, Blocks.CRIMSON_FUNGUS,
+      Blocks.CRIMSON_NYLIUM, Blocks.CRIMSON_PLANKS, Blocks.CRIMSON_ROOTS, Blocks.CRYING_OBSIDIAN,
+      Blocks.CUT_COPPER, Blocks.CUT_RED_SANDSTONE, Blocks.CUT_SANDSTONE, Blocks.CYAN_TERRACOTTA,
+      Blocks.CYAN_WOOL, Blocks.DARK_OAK_LOG, Blocks.DARK_OAK_PLANKS, Blocks.DARK_PRISMARINE,
+      Blocks.DEAD_BRAIN_CORAL_BLOCK, Blocks.DEAD_BUBBLE_CORAL_BLOCK, Blocks.DEAD_FIRE_CORAL_BLOCK, Blocks.DEAD_HORN_CORAL_BLOCK,
+      Blocks.DEAD_TUBE_CORAL_BLOCK, Blocks.DEEPSLATE, Blocks.DEEPSLATE_BRICKS, Blocks.DEEPSLATE_COAL_ORE,
+      Blocks.DEEPSLATE_COPPER_ORE, Blocks.DEEPSLATE_DIAMOND_ORE, Blocks.DEEPSLATE_EMERALD_ORE, Blocks.DEEPSLATE_GOLD_ORE,
+      Blocks.DEEPSLATE_IRON_ORE, Blocks.DEEPSLATE_LAPIS_ORE, Blocks.DEEPSLATE_TILES, Blocks.DIAMOND_BLOCK,
+      Blocks.DIAMOND_ORE, Blocks.DIORITE, Blocks.DIRT, Blocks.DRIPSTONE_BLOCK,
+      Blocks.EMERALD_BLOCK, Blocks.EMERALD_ORE, Blocks.END_STONE, Blocks.END_STONE_BRICKS,
+      Blocks.EXPOSED_COPPER, Blocks.EXPOSED_CUT_COPPER, Blocks.FIRE_CORAL_BLOCK, Blocks.GILDED_BLACKSTONE,
+      Blocks.GLOWSTONE, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.GRANITE,
+      Blocks.GRAVEL, Blocks.GRAY_TERRACOTTA, Blocks.GRAY_WOOL, Blocks.GREEN_TERRACOTTA,
+      Blocks.GREEN_WOOL, Blocks.HONEYCOMB_BLOCK, Blocks.HORN_CORAL_BLOCK, Blocks.ICE,
+      Blocks.IRON_BARS, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.JUNGLE_LOG,
+      Blocks.JUNGLE_PLANKS, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.LIGHT_BLUE_TERRACOTTA,
+      Blocks.LIGHT_BLUE_WOOL, Blocks.LIGHT_GRAY_TERRACOTTA, Blocks.LIGHT_GRAY_WOOL, Blocks.LIME_TERRACOTTA,
+      Blocks.LIME_WOOL, Blocks.MAGENTA_TERRACOTTA, Blocks.MAGENTA_WOOL, Blocks.MANGROVE_LOG,
+      Blocks.MANGROVE_PLANKS, Blocks.MOSS_BLOCK, Blocks.MOSSY_COBBLESTONE, Blocks.MOSSY_STONE_BRICKS,
+      Blocks.MUD, Blocks.MUD_BRICKS, Blocks.MUSHROOM_STEM, Blocks.NETHER_BRICKS,
+      Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_WART_BLOCK, Blocks.NETHERITE_BLOCK,
+      Blocks.NETHERRACK, Blocks.OAK_LOG, Blocks.OAK_PLANKS, Blocks.OBSIDIAN,
+      Blocks.ORANGE_TERRACOTTA, Blocks.ORANGE_WOOL, Blocks.OXIDIZED_COPPER, Blocks.OXIDIZED_CUT_COPPER,
+      Blocks.PACKED_ICE, Blocks.PACKED_MUD, Blocks.PINK_TERRACOTTA, Blocks.PINK_WOOL,
+      Blocks.POLISHED_ANDESITE, Blocks.POLISHED_BLACKSTONE, Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.POLISHED_DEEPSLATE,
+      Blocks.POLISHED_DIORITE, Blocks.POLISHED_GRANITE, Blocks.PRISMARINE_BRICKS, Blocks.PURPLE_TERRACOTTA,
+      Blocks.PURPLE_WOOL, Blocks.PURPUR_BLOCK, Blocks.PURPUR_PILLAR, Blocks.QUARTZ_BRICKS,
+      Blocks.QUARTZ_PILLAR, Blocks.RAW_COPPER_BLOCK, Blocks.RAW_GOLD_BLOCK, Blocks.RAW_IRON_BLOCK,
+      Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK, Blocks.RED_NETHER_BRICKS, Blocks.RED_SAND,
+      Blocks.RED_SANDSTONE, Blocks.RED_TERRACOTTA, Blocks.RED_WOOL, Blocks.REDSTONE_BLOCK,
+      Blocks.REDSTONE_ORE, Blocks.ROOTED_DIRT, Blocks.SAND, Blocks.SANDSTONE,
+      Blocks.SCULK, Blocks.SHROOMLIGHT, Blocks.SLIME_BLOCK, Blocks.SMOOTH_BASALT,
+      Blocks.SMOOTH_STONE, Blocks.SOUL_SAND, Blocks.SOUL_SOIL, Blocks.SPONGE,
+      Blocks.SPRUCE_LOG, Blocks.SPRUCE_PLANKS, Blocks.STONE, Blocks.STONE_BRICKS,
+      Blocks.STRIPPED_ACACIA_LOG, Blocks.STRIPPED_BAMBOO_BLOCK, Blocks.STRIPPED_BIRCH_LOG, Blocks.STRIPPED_DARK_OAK_LOG,
+      Blocks.STRIPPED_JUNGLE_LOG, Blocks.STRIPPED_MANGROVE_LOG, Blocks.STRIPPED_OAK_LOG, Blocks.STRIPPED_SPRUCE_LOG,
+      Blocks.TERRACOTTA, Blocks.TUBE_CORAL_BLOCK, Blocks.TUFF, Blocks.WARPED_FUNGUS,
+      Blocks.WARPED_NYLIUM, Blocks.WARPED_PLANKS, Blocks.WARPED_ROOTS, Blocks.WARPED_WART_BLOCK,
+      Blocks.WEATHERED_COPPER, Blocks.WEATHERED_CUT_COPPER, Blocks.WET_SPONGE, Blocks.WHITE_TERRACOTTA,
+      Blocks.WHITE_WOOL, Blocks.YELLOW_TERRACOTTA, Blocks.YELLOW_WOOL
   );
+
+  public static final List<TorchEntry> TORCHES = MATERIALS.stream().map(ModBlocks::torch).toList();
+  public static final List<TorchEntry> REDSTONE_TORCHES = MATERIALS.stream().map(ModBlocks::redstoneTorch).toList();
+  public static final List<TorchEntry> SOUL_TORCHES = MATERIALS.stream().map(ModBlocks::soulTorch).toList();
 
   private static TorchEntry torch(Block source) {
     String name = BuiltInRegistries.BLOCK.getKey(source).getPath() + "_torch";
-    Block standing = new TorchBlockBase(torchProperties(), ParticleTypes.FLAME);
-    Block wall = new WallTorchBlockBase(torchProperties().dropsLike(standing), ParticleTypes.FLAME);
-    return new TorchEntry(name, standing, wall, source);
+    Block standing = new TorchBlockBase(torchProperties(14), ParticleTypes.FLAME);
+    Block wall = new WallTorchBlockBase(torchProperties(14).dropsLike(standing), ParticleTypes.FLAME);
+    return new TorchEntry(name, TorchKind.NORMAL, standing, wall, source);
   }
 
-  private static BlockBehaviour.Properties torchProperties() {
+  private static TorchEntry soulTorch(Block source) {
+    String name = BuiltInRegistries.BLOCK.getKey(source).getPath() + "_soul_torch";
+    Block standing = new TorchBlockBase(torchProperties(10), ParticleTypes.SOUL_FIRE_FLAME);
+    Block wall = new WallTorchBlockBase(torchProperties(10).dropsLike(standing), ParticleTypes.SOUL_FIRE_FLAME);
+    return new TorchEntry(name, TorchKind.SOUL, standing, wall, source);
+  }
+
+  private static TorchEntry redstoneTorch(Block source) {
+    String name = BuiltInRegistries.BLOCK.getKey(source).getPath() + "_redstone_torch";
+    Block standing = new RedstoneTorchBlockBase(redstoneTorchProperties());
+    Block wall = new RedstoneWallTorchBlockBase(redstoneTorchProperties().dropsLike(standing));
+    return new TorchEntry(name, TorchKind.REDSTONE, standing, wall, source);
+  }
+
+  private static BlockBehaviour.Properties torchProperties(int lightLevel) {
     return BlockBehaviour.Properties.of()
         .noCollission()
         .instabreak()
-        .lightLevel(state -> 14)
+        .lightLevel(state -> lightLevel)
+        .sound(SoundType.WOOD);
+  }
+
+  private static BlockBehaviour.Properties redstoneTorchProperties() {
+    return BlockBehaviour.Properties.of()
+        .noCollission()
+        .instabreak()
+        .lightLevel(state -> state.getValue(RedstoneTorchBlock.LIT) ? 7 : 0)
         .sound(SoundType.WOOD);
   }
 
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
-    for (TorchEntry entry : TORCHES) {
+    registerAll(TORCHES, consumer);
+    registerAll(REDSTONE_TORCHES, consumer);
+    registerAll(SOUL_TORCHES, consumer);
+  }
+
+  private static void registerAll(List<TorchEntry> entries, BiConsumer<Block, ResourceLocation> consumer) {
+    for (TorchEntry entry : entries) {
       consumer.accept(entry.standing(), new ResourceLocation(Constants.MOD_ID, entry.name()));
       consumer.accept(entry.wall(), new ResourceLocation(Constants.MOD_ID, entry.name() + "_wall"));
     }

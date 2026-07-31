@@ -15,9 +15,19 @@ public class MBTItemModelProvider extends ItemModelProvider {
   @Override
   protected void registerModels() {
     for (ModBlocks.TorchEntry entry : ModBlocks.TORCHES) {
-      ResourceLocation torchTexture = modLoc("block/" + entry.name());
-      withExistingParent(entry.name(), mcLoc("item/generated"))
-          .texture("layer0", torchTexture);
+      item(entry);
     }
+    for (ModBlocks.TorchEntry entry : ModBlocks.SOUL_TORCHES) {
+      item(entry);
+    }
+    for (ModBlocks.TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {
+      item(entry);
+    }
+  }
+
+  private void item(ModBlocks.TorchEntry entry) {
+    ResourceLocation torchTexture = modLoc("block/" + entry.name());
+    withExistingParent(entry.name(), mcLoc("item/generated"))
+        .texture("layer0", torchTexture);
   }
 }

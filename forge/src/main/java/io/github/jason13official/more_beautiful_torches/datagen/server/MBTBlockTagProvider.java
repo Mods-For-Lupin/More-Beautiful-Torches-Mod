@@ -33,5 +33,11 @@ public class MBTBlockTagProvider extends BlockTagsProvider {
     for (ModBlocks.TorchEntry entry : ModBlocks.TORCHES) {
       appender.add(entry.standing()).add(entry.wall());
     }
+    for (ModBlocks.TorchEntry entry : ModBlocks.SOUL_TORCHES) {
+      appender.add(entry.standing()).add(entry.wall());
+    }
+    for (ModBlocks.TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {
+      appender.add(entry.standing()).add(entry.wall());
+    }
   }
 }

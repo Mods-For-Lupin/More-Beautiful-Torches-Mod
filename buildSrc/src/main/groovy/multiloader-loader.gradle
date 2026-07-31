@@ -29,7 +29,11 @@ tasks.named('compileJava', JavaCompile) {
 
 processResources {
     dependsOn(configurations.commonResources)
-    from(configurations.commonResources)
+    from(configurations.commonResources) {
+        // .cache/ is DataGenerator's own incremental-build bookkeeping (HashCache),
+        // not game content - never meant to ship in the mod jar.
+        exclude '.cache/**'
+    }
 }
 
 tasks.named('javadoc', Javadoc).configure {
@@ -41,5 +45,7 @@ tasks.named('sourcesJar', Jar) {
     dependsOn(configurations.commonJava)
     from(configurations.commonJava)
     dependsOn(configurations.commonResources)
-    from(configurations.commonResources)
+    from(configurations.commonResources) {
+        exclude '.cache/**'
+    }
 }

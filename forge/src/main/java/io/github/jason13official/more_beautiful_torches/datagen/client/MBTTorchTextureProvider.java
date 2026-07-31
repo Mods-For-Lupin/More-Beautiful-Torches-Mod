@@ -9,11 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import javax.imageio.ImageIO;
-import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -47,11 +44,15 @@ public class MBTTorchTextureProvider implements DataProvider {
 
   @Override
   public CompletableFuture<?> run(CachedOutput output) {
-    List<CompletableFuture<?>> futures = new ArrayList<>();
+    
+    // this is on purpose; ExistingFileHelper's generated-resource multimap isn't
+    // thread-safe, and trackGenerated() calls from parallel tasks silently dropped
+    // entries (the PNG would still be written, but the later BlockStateProvider/
+    // ItemModelProvider validation against that texture would randomly fail).
     for (ModBlocks.TorchEntry entry : ModBlocks.TORCHES) {
-      futures.add(CompletableFuture.runAsync(() -> writeTexture(output, entry), Util.backgroundExecutor()));
+      writeTexture(output, entry);
     }
-    return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
+    return CompletableFuture.completedFuture(null);
   }
 
   private void writeTexture(CachedOutput output, ModBlocks.TorchEntry entry) {

@@ -1,5 +1,6 @@
 package io.github.jason13official.more_beautiful_torches;
 
+import io.github.jason13official.more_beautiful_torches.datagen.client.MBTDatagenClient;
 import io.github.jason13official.more_beautiful_torches.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_beautiful_torches.impl.common.registry.ModEntities;
 import io.github.jason13official.more_beautiful_torches.impl.common.registry.ModItems;
@@ -22,6 +23,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
@@ -43,6 +45,7 @@ public class MoreBeautifulTorchesNeoForge {
     bind(Registries.CREATIVE_MODE_TAB, ModTabs::register);
 
     EVENT_BUS.addListener((Consumer<FMLCommonSetupEvent>) event -> MoreBeautifulTorches.init());
+    EVENT_BUS.addListener((Consumer<GatherDataEvent>) MBTDatagenClient::init);
 
     NeoForge.EVENT_BUS.addListener((Consumer<AddReloadListenerEvent>) event -> {
       event.addListener(new ResourceReloadListener());

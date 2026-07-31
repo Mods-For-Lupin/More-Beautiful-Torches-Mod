@@ -27,6 +27,8 @@ neoForge {
     }
 }
 
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
 configurations {
     commonJava {
         canBeResolved = false
@@ -40,6 +42,10 @@ configurations {
 
 artifacts {
     commonJava sourceSets.main.java.sourceDirectories.singleFile
-    commonResources sourceSets.main.resources.sourceDirectories.singleFile
+    // singleFile would throw now that resources has two srcDirs (src/main/resources
+    // and the datagen output at src/generated/resources) - publish each dir as its
+    // own artifact instead; consumers just do from(configurations.commonResources),
+    // which happily unions however many artifacts a configuration resolves to.
+    sourceSets.main.resources.srcDirs.each { dir -> commonResources dir }
 }
 

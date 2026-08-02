@@ -7,6 +7,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
@@ -21,21 +22,26 @@ public class MBTRecipeProvider extends RecipeProvider {
   @Override
   protected void buildRecipes(Consumer<FinishedRecipe> writer) {
     for (ModBlocks.TorchEntry entry : ModBlocks.TORCHES) {
-      torch(writer, entry.standing(), entry.source(), Ingredient.of(Items.STICK));
+      torch(writer, entry.standing(), entry.source(),
+          Ingredient.of(Items.STICK), Ingredient.of(ItemTags.COALS));
     }
     for (ModBlocks.TorchEntry entry : ModBlocks.SOUL_TORCHES) {
-      torch(writer, entry.standing(), entry.source(), Ingredient.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND));
+      torch(writer, entry.standing(), entry.source(),
+          Ingredient.of(Items.STICK), Ingredient.of(ItemTags.COALS), Ingredient.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND));
     }
     for (ModBlocks.TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {
-      torch(writer, entry.standing(), entry.source(), Ingredient.of(Items.REDSTONE));
+      torch(writer, entry.standing(), entry.source(),
+          Ingredient.of(Items.STICK), Ingredient.of(Items.REDSTONE));
     }
   }
 
-  private void torch(Consumer<FinishedRecipe> writer, Block standing, Block source, Ingredient catalyst) {
-    ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, standing, 4)
-        .requires(source)
-        .requires(catalyst)
-        .unlockedBy(getHasName(source), has(source))
+  private void torch(Consumer<FinishedRecipe> writer, Block standing, Block source, Ingredient... ingredients) {
+    ShapelessRecipeBuilder builder = ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, standing, 4)
+        .requires(source);
+    for (Ingredient ingredient : ingredients) {
+      builder.requires(ingredient);
+    }
+    builder.unlockedBy(getHasName(source), has(source))
         .save(writer);
   }
 }

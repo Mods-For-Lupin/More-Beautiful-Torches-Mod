@@ -16,5 +16,15 @@ public class MoreBeautifulTorchesClientFabric implements ClientModInitializer {
       BlockRenderLayerMap.INSTANCE.putBlock(entry.standing(), RenderType.cutout());
       BlockRenderLayerMap.INSTANCE.putBlock(entry.wall(), RenderType.cutout());
     }
+
+    for (ModBlocks.TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {
+      BlockRenderLayerMap.INSTANCE.putBlock(entry.standing(), RenderType.cutout());
+      BlockRenderLayerMap.INSTANCE.putBlock(entry.wall(), RenderType.cutout());
+    }
+
+    for (ModBlocks.TorchEntry entry : ModBlocks.SOUL_TORCHES) {
+      BlockRenderLayerMap.INSTANCE.putBlock(entry.standing(), RenderType.cutout());
+      BlockRenderLayerMap.INSTANCE.putBlock(entry.wall(), RenderType.cutout());
+    }
   }
 }

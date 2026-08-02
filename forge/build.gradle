@@ -18,6 +18,7 @@ dependencies {
   }
 
   modImplementation "maven.modrinth:monolib:forge-1.20.1-4.1.0"
+  modImplementation "maven.modrinth:u6dRKJwZ:QbzBDrjN"
 }
 
 mixin {

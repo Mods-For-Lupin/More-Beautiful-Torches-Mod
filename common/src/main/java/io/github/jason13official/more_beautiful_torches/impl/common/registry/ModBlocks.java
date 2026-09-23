@@ -89,12 +89,29 @@ public class ModBlocks {
       // chests/golem statues (complex multi-part models), copper_torch/copper_wall_torch
       // (already a torch), creaking_heart/dried_ghast/lightning_rod variants (complex or thin-rod
       // shapes), potted_* (a pot holding a plant, not a material), test blocks.
-      Blocks.BUSH, Blocks.CACTUS_FLOWER, Blocks.CHISELED_RESIN_BRICKS, Blocks.CLOSED_EYEBLOSSOM,
-      Blocks.FIREFLY_BUSH, Blocks.GOLDEN_DANDELION, Blocks.IRON_CHAIN, Blocks.LEAF_LITTER,
-      Blocks.OPEN_EYEBLOSSOM, Blocks.PALE_HANGING_MOSS, Blocks.PALE_MOSS_BLOCK, Blocks.PALE_MOSS_CARPET,
-      Blocks.PALE_OAK_LEAVES, Blocks.PALE_OAK_LOG, Blocks.PALE_OAK_PLANKS, Blocks.PALE_OAK_SAPLING,
-      Blocks.RESIN_BLOCK, Blocks.RESIN_BRICKS, Blocks.RESIN_CLUMP, Blocks.SHORT_DRY_GRASS,
-      Blocks.STRIPPED_PALE_OAK_LOG, Blocks.TALL_DRY_GRASS, Blocks.WILDFLOWERS
+      // Blocks.BUSH,
+      Blocks.CACTUS_FLOWER,
+      Blocks.CHISELED_RESIN_BRICKS,
+      Blocks.CLOSED_EYEBLOSSOM,
+      Blocks.FIREFLY_BUSH,
+      Blocks.GOLDEN_DANDELION,
+      // Blocks.IRON_CHAIN,
+      // Blocks.LEAF_LITTER,
+      Blocks.OPEN_EYEBLOSSOM,
+      // Blocks.PALE_HANGING_MOSS,
+      Blocks.PALE_MOSS_BLOCK,
+      Blocks.PALE_MOSS_CARPET,
+      // Blocks.PALE_OAK_LEAVES,
+      Blocks.PALE_OAK_LOG,
+      Blocks.PALE_OAK_PLANKS,
+      // Blocks.PALE_OAK_SAPLING,
+      Blocks.RESIN_BLOCK,
+      Blocks.RESIN_BRICKS,
+      // Blocks.RESIN_CLUMP,
+      // Blocks.SHORT_DRY_GRASS,
+      Blocks.STRIPPED_PALE_OAK_LOG
+      // Blocks.TALL_DRY_GRASS,
+      // Blocks.WILDFLOWERS
   );
 
   public static final List<TorchEntry> TORCHES = MATERIALS.stream().map(ModBlocks::torch).toList();

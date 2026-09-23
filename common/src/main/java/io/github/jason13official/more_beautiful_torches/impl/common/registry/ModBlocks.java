@@ -7,6 +7,7 @@ import io.github.jason13official.more_beautiful_torches.impl.common.block.TorchB
 import io.github.jason13official.more_beautiful_torches.impl.common.block.WallTorchBlockBase;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +21,47 @@ public class ModBlocks {
 
   public enum TorchKind {NORMAL, REDSTONE, SOUL}
 
-  public record TorchEntry(String name, TorchKind kind, Block standing, Block wall, Block source) {}
+  /// create wall torches lazily (dropsLike resolves the standing loot table id from block registry, so standing torch must already be registered to mimic vanilla)
+  public static final class TorchEntry {
+
+    private final String name;
+    private final TorchKind kind;
+    private final Block standing;
+    private final Block source;
+    private final Function<Block, Block> wallFactory;
+    private Block wall;
+
+    private TorchEntry(String name, TorchKind kind, Block standing, Block source, Function<Block, Block> wallFactory) {
+      this.name = name;
+      this.kind = kind;
+      this.standing = standing;
+      this.source = source;
+      this.wallFactory = wallFactory;
+    }
+
+    public String name() {
+      return name;
+    }
+
+    public TorchKind kind() {
+      return kind;
+    }
+
+    public Block standing() {
+      return standing;
+    }
+
+    public Block source() {
+      return source;
+    }
+
+    public Block wall() {
+      if (wall == null) {
+        wall = wallFactory.apply(standing);
+      }
+      return wall;
+    }
+  }
 
   // Every vanilla block whose own texture is a single flat square i.e. Blocks/<name>.png
   // exists as-is; excludes multi-face blocks (logs' end caps, pumpkin, basalt, etc.) for now
@@ -89,22 +130,22 @@ public class ModBlocks {
   private static TorchEntry torch(Block source) {
     String name = BuiltInRegistries.BLOCK.getKey(source).getPath() + "_torch";
     Block standing = new TorchBlockBase(ParticleTypes.FLAME, torchProperties(14));
-    Block wall = new WallTorchBlockBase(ParticleTypes.FLAME, torchProperties(14).dropsLike(standing));
-    return new TorchEntry(name, TorchKind.NORMAL, standing, wall, source);
+    return new TorchEntry(name, TorchKind.NORMAL, standing, source,
+        s -> new WallTorchBlockBase(ParticleTypes.FLAME, torchProperties(14).dropsLike(s)));
   }
 
   private static TorchEntry soulTorch(Block source) {
     String name = BuiltInRegistries.BLOCK.getKey(source).getPath() + "_soul_torch";
     Block standing = new TorchBlockBase(ParticleTypes.SOUL_FIRE_FLAME, torchProperties(10));
-    Block wall = new WallTorchBlockBase(ParticleTypes.SOUL_FIRE_FLAME, torchProperties(10).dropsLike(standing));
-    return new TorchEntry(name, TorchKind.SOUL, standing, wall, source);
+    return new TorchEntry(name, TorchKind.SOUL, standing, source,
+        s -> new WallTorchBlockBase(ParticleTypes.SOUL_FIRE_FLAME, torchProperties(10).dropsLike(s)));
   }
 
   private static TorchEntry redstoneTorch(Block source) {
     String name = BuiltInRegistries.BLOCK.getKey(source).getPath() + "_redstone_torch";
     Block standing = new RedstoneTorchBlockBase(redstoneTorchProperties());
-    Block wall = new RedstoneWallTorchBlockBase(redstoneTorchProperties().dropsLike(standing));
-    return new TorchEntry(name, TorchKind.REDSTONE, standing, wall, source);
+    return new TorchEntry(name, TorchKind.REDSTONE, standing, source,
+        s -> new RedstoneWallTorchBlockBase(redstoneTorchProperties().dropsLike(s)));
   }
 
   private static BlockBehaviour.Properties torchProperties(int lightLevel) {

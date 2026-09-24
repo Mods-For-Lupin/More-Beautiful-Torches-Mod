@@ -17,6 +17,13 @@ public class MBTBlockTagProvider extends BlockTagsProvider {
   public static final TagKey<Block> TORCHES =
       TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "torches"));
 
+  public static final TagKey<Block> NORMAL_TORCHES =
+      TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "normal_torches"));
+  public static final TagKey<Block> SOUL_TORCHES =
+      TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "soul_torches"));
+  public static final TagKey<Block> REDSTONE_TORCHES =
+      TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "redstone_torches"));
+
   public MBTBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
     super(output, lookupProvider, Constants.MOD_ID);
   }
@@ -28,15 +35,22 @@ public class MBTBlockTagProvider extends BlockTagsProvider {
 
   @Override
   protected void addTags(HolderLookup.Provider registries) {
-    TagAppender<Block, Block> appender = tag(TORCHES);
+    TagAppender<Block, Block> all = tag(TORCHES);
+    TagAppender<Block, Block> normal = tag(NORMAL_TORCHES);
+    TagAppender<Block, Block> soul = tag(SOUL_TORCHES);
+    TagAppender<Block, Block> redstone = tag(REDSTONE_TORCHES);
+
     for (ModBlocks.TorchEntry entry : ModBlocks.TORCHES) {
-      appender.add(entry.standing()).add(entry.wall());
+      all.add(entry.standing()).add(entry.wall());
+      normal.add(entry.standing()).add(entry.wall());
     }
     for (ModBlocks.TorchEntry entry : ModBlocks.SOUL_TORCHES) {
-      appender.add(entry.standing()).add(entry.wall());
+      all.add(entry.standing()).add(entry.wall());
+      soul.add(entry.standing()).add(entry.wall());
     }
     for (ModBlocks.TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {
-      appender.add(entry.standing()).add(entry.wall());
+      all.add(entry.standing()).add(entry.wall());
+      redstone.add(entry.standing()).add(entry.wall());
     }
   }
 }

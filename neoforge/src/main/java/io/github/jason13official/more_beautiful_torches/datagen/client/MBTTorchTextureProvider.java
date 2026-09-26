@@ -31,6 +31,7 @@ public class MBTTorchTextureProvider implements DataProvider {
 
   private static final Identifier TORCH = fullTexture(Identifier.withDefaultNamespace("block/torch"));
   private static final Identifier SOUL_TORCH = fullTexture(Identifier.withDefaultNamespace("block/soul_torch"));
+  private static final Identifier COPPER_TORCH = fullTexture(Identifier.withDefaultNamespace("block/copper_torch"));
   private static final Identifier REDSTONE_TORCH = fullTexture(Identifier.withDefaultNamespace("block/redstone_torch"));
   private static final Identifier REDSTONE_TORCH_OFF = fullTexture(Identifier.withDefaultNamespace("block/redstone_torch_off"));
 
@@ -49,6 +50,9 @@ public class MBTTorchTextureProvider implements DataProvider {
     }
     for (TorchEntry entry : ModBlocks.SOUL_TORCHES) {
       writeTexture(output, entry.name(), SOUL_TORCH, 8, entry.source());
+    }
+    for (TorchEntry entry : ModBlocks.COPPER_TORCHES) {
+      writeTexture(output, entry.name(), COPPER_TORCH, 8, entry.source());
     }
     for (TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {
       writeTexture(output, entry.name(), REDSTONE_TORCH, 9, entry.source());

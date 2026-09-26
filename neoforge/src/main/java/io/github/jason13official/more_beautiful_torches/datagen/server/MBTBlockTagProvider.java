@@ -21,6 +21,8 @@ public class MBTBlockTagProvider extends BlockTagsProvider {
       TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "normal_torches"));
   public static final TagKey<Block> SOUL_TORCHES =
       TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "soul_torches"));
+  public static final TagKey<Block> COPPER_TORCHES =
+      TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "copper_torches"));
   public static final TagKey<Block> REDSTONE_TORCHES =
       TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "redstone_torches"));
 
@@ -38,6 +40,7 @@ public class MBTBlockTagProvider extends BlockTagsProvider {
     TagAppender<Block, Block> all = tag(TORCHES);
     TagAppender<Block, Block> normal = tag(NORMAL_TORCHES);
     TagAppender<Block, Block> soul = tag(SOUL_TORCHES);
+    TagAppender<Block, Block> copper = tag(COPPER_TORCHES);
     TagAppender<Block, Block> redstone = tag(REDSTONE_TORCHES);
 
     for (ModBlocks.TorchEntry entry : ModBlocks.TORCHES) {
@@ -47,6 +50,10 @@ public class MBTBlockTagProvider extends BlockTagsProvider {
     for (ModBlocks.TorchEntry entry : ModBlocks.SOUL_TORCHES) {
       all.add(entry.standing()).add(entry.wall());
       soul.add(entry.standing()).add(entry.wall());
+    }
+    for (ModBlocks.TorchEntry entry : ModBlocks.COPPER_TORCHES) {
+      all.add(entry.standing()).add(entry.wall());
+      copper.add(entry.standing()).add(entry.wall());
     }
     for (ModBlocks.TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {
       all.add(entry.standing()).add(entry.wall());

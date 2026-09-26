@@ -38,6 +38,10 @@ public class MBTRecipeProvider extends RecipeProvider.Runner {
           torch(output, entry.standing(), entry.source(),
               Ingredient.of(Items.STICK), tag(ItemTags.COALS), Ingredient.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND));
         }
+        for (TorchEntry entry : ModBlocks.COPPER_TORCHES) {
+          torch(output, entry.standing(), entry.source(),
+              Ingredient.of(Items.STICK), tag(ItemTags.COALS), Ingredient.of(Items.COPPER_NUGGET));
+        }
         for (TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {
           torch(output, entry.standing(), entry.source(),
               Ingredient.of(Items.STICK), Ingredient.of(Items.REDSTONE));

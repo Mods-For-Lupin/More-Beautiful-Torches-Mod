@@ -19,7 +19,7 @@ public class MBTBlockLootProvider extends BlockLootSubProvider {
   // torch/wall_torch) - getKnownBlocks() only needs to cover the standing blocks.
   @Override
   protected Iterable<Block> getKnownBlocks() {
-    return Stream.of(ModBlocks.TORCHES, ModBlocks.SOUL_TORCHES, ModBlocks.REDSTONE_TORCHES)
+    return Stream.of(ModBlocks.TORCHES, ModBlocks.SOUL_TORCHES, ModBlocks.COPPER_TORCHES, ModBlocks.REDSTONE_TORCHES)
         .flatMap(entries -> entries.stream().map(ModBlocks.TorchEntry::standing))
         .toList();
   }
@@ -30,6 +30,9 @@ public class MBTBlockLootProvider extends BlockLootSubProvider {
       this.dropSelf(entry.standing());
     }
     for (ModBlocks.TorchEntry entry : ModBlocks.SOUL_TORCHES) {
+      this.dropSelf(entry.standing());
+    }
+    for (ModBlocks.TorchEntry entry : ModBlocks.COPPER_TORCHES) {
       this.dropSelf(entry.standing());
     }
     for (ModBlocks.TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {

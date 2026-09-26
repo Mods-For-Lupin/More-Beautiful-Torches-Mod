@@ -17,6 +17,7 @@ public class ModItems {
     registerAll(ModBlocks.TORCHES, consumer);
     registerAll(ModBlocks.REDSTONE_TORCHES, consumer);
     registerAll(ModBlocks.SOUL_TORCHES, consumer);
+    registerAll(ModBlocks.COPPER_TORCHES, consumer);
   }
 
   private static void registerAll(List<TorchEntry> entries, BiConsumer<Item, Identifier> consumer) {

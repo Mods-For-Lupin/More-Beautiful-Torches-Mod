@@ -24,6 +24,9 @@ public class MBTLanguageProvider extends LanguageProvider {
     for (TorchEntry entry : ModBlocks.SOUL_TORCHES) {
       addTorch(entry, "Soul Torch", "Soul Wall Torch");
     }
+    for (TorchEntry entry : ModBlocks.COPPER_TORCHES) {
+      addTorch(entry, "Copper Torch", "Copper Wall Torch");
+    }
     for (TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {
       addTorch(entry, "Redstone Torch", "Redstone Wall Torch");
     }

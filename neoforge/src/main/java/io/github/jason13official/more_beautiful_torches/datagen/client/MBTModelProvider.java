@@ -46,7 +46,7 @@ public class MBTModelProvider extends ModelProvider {
 
   @Override
   protected Stream<? extends Holder<Block>> getKnownBlocks() {
-    return Stream.of(ModBlocks.TORCHES, ModBlocks.SOUL_TORCHES, ModBlocks.REDSTONE_TORCHES)
+    return Stream.of(ModBlocks.TORCHES, ModBlocks.SOUL_TORCHES, ModBlocks.COPPER_TORCHES, ModBlocks.REDSTONE_TORCHES)
         .flatMap(entries -> entries.stream().flatMap(e -> Stream.of(e.standing(), e.wall())))
         .map(Block::builtInRegistryHolder);
   }
@@ -57,6 +57,9 @@ public class MBTModelProvider extends ModelProvider {
       normalTorch(bg, entry);
     }
     for (TorchEntry entry : ModBlocks.SOUL_TORCHES) {
+      normalTorch(bg, entry);
+    }
+    for (TorchEntry entry : ModBlocks.COPPER_TORCHES) {
       normalTorch(bg, entry);
     }
     for (TorchEntry entry : ModBlocks.REDSTONE_TORCHES) {

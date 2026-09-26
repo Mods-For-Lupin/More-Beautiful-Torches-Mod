@@ -22,6 +22,7 @@ public class ModTabs {
 
           ModBlocks.TORCHES.forEach(torch -> output.accept(torch.standing()));
           ModBlocks.SOUL_TORCHES.forEach(torch -> output.accept(torch.standing()));
+          ModBlocks.COPPER_TORCHES.forEach(torch -> output.accept(torch.standing()));
           ModBlocks.REDSTONE_TORCHES.forEach(torch -> output.accept(torch.standing()));
         })).build();
 

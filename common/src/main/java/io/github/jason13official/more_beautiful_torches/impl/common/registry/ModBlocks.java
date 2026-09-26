@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class ModBlocks {
 
-  public enum TorchKind {NORMAL, REDSTONE, SOUL}
+  public enum TorchKind {NORMAL, REDSTONE, SOUL, COPPER}
 
   public record TorchEntry(String name, TorchKind kind, Block standing, Block wall, Block source) {}
 
@@ -117,6 +117,7 @@ public class ModBlocks {
   public static final List<TorchEntry> TORCHES = MATERIALS.stream().map(ModBlocks::torch).toList();
   public static final List<TorchEntry> REDSTONE_TORCHES = MATERIALS.stream().map(ModBlocks::redstoneTorch).toList();
   public static final List<TorchEntry> SOUL_TORCHES = MATERIALS.stream().map(ModBlocks::soulTorch).toList();
+  public static final List<TorchEntry> COPPER_TORCHES = MATERIALS.stream().map(ModBlocks::copperTorch).toList();
 
   private static TorchEntry torch(Block source) {
     String name = BuiltInRegistries.BLOCK.getKey(source).getPath() + "_torch";
@@ -132,6 +133,14 @@ public class ModBlocks {
     Block wall = new WallTorchBlockBase(ParticleTypes.SOUL_FIRE_FLAME,
         torchProperties(10).overrideLootTable(standing.getLootTable()).setId(blockKey(name + "_wall")));
     return new TorchEntry(name, TorchKind.SOUL, standing, wall, source);
+  }
+
+  private static TorchEntry copperTorch(Block source) {
+    String name = BuiltInRegistries.BLOCK.getKey(source).getPath() + "_copper_torch";
+    Block standing = new TorchBlockBase(ParticleTypes.COPPER_FIRE_FLAME, torchProperties(14).setId(blockKey(name)));
+    Block wall = new WallTorchBlockBase(ParticleTypes.COPPER_FIRE_FLAME,
+        torchProperties(14).overrideLootTable(standing.getLootTable()).setId(blockKey(name + "_wall")));
+    return new TorchEntry(name, TorchKind.COPPER, standing, wall, source);
   }
 
   private static TorchEntry redstoneTorch(Block source) {
@@ -166,6 +175,7 @@ public class ModBlocks {
     registerAll(TORCHES, consumer);
     registerAll(REDSTONE_TORCHES, consumer);
     registerAll(SOUL_TORCHES, consumer);
+    registerAll(COPPER_TORCHES, consumer);
   }
 
   private static void registerAll(List<TorchEntry> entries, BiConsumer<Block, Identifier> consumer) {
